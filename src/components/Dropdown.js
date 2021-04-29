@@ -6,18 +6,19 @@ const Dropdown = ({ label, options, selected, onSelectedChange }) => {
 
   useEffect(() => {
     const onBodyClick = (event) => {
-      if (ref.current && ref.current.contains(event.target)) {
+      if (ref.current.contains(event.target)) {
         return;
       }
       setOpen(false);
     };
-    document.body.addEventListener('click', onBodyClick);
+    document.body.addEventListener('click', onBodyClick, { capture: true });
 
     return () => {
-      document.body.addEventListener('click', onBodyClick);
+      document.body.removeEventListener('click', onBodyClick, {
+        capture: true,
+      });
     };
   }, []);
-
   const renderOptions = options.map((option) => {
     if (option.value === selected.value) {
       return null;
